@@ -9,7 +9,6 @@ const HomeScreen = () => {
       <Navbar />
 
       <Banner />
-      {/* Banner */}
 
       {/* Row */}
       {/* Row */}

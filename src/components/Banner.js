@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios, { imageBaseURL } from '../api/axios';
+import requests from '../api/requests';
 import '../styles/Banner.css';
 
 const Banner = () => {
+  const [movie, setMovie] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      const request = await axios.get(requests.fetchNetflixOriginals);
+      setMovie(
+        request.data.results[
+          Math.floor(Math.random() * request.data.results.length - 1)
+        ]
+      );
+    }
+
+    console.log(movie);
+
+    fetchData();
+  }, []);
+
+  console.log(movie);
+
   const truncate = (string, n) => {
     return string?.length > n ? string.substring(0, n - 1) + '...' : string;
   };
@@ -11,24 +32,20 @@ const Banner = () => {
       className="banner"
       style={{
         backgroundSize: 'cover',
-        backgroundImage: `url('https://linitiative.ca/wp-content/uploads/2018/02/netflix-banner.jpg')`,
+        backgroundImage: `url(${imageBaseURL + movie?.backdrop_path})`,
         backgroundPosition: 'center center'
       }}
     >
       <div className="banner__contents">
-        <h1 className="banner__title">Movie Name</h1>
+        <h1 className="banner__title">
+          {movie?.title || movie?.name || movie?.original_name}
+        </h1>
         <div className="banner__buttons">
           <button className="banner__button">Play</button>
           <button className="banner__button">My List</button>
         </div>
         <h1 className="banner__description">
-          {truncate(
-            `Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-          eveniet ipsa quas qui dicta sint quia odit laborum, laboriosam
-          deserunt dignissimos, culpa, aspernatur beatae tenetur in eius itaque
-          soluta veniam!`,
-            150
-          )}
+          {truncate(movie?.overview, 150)}
         </h1>
       </div>
 
