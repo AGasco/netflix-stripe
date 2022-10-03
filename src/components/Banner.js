@@ -9,19 +9,24 @@ const Banner = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(requests.fetchNetflixOriginals);
-      setMovie(
+      let randomMovie =
         response.data.results[
           Math.floor(Math.random() * response.data.results.length - 1)
-        ]
-      );
-    }
+        ];
 
-    console.log(movie);
+      while (!randomMovie) {
+        console.log('Selecting a new random movie');
+        randomMovie =
+          response.data.results[
+            Math.floor(Math.random() * response.data.results.length - 1)
+          ];
+      }
+
+      setMovie(randomMovie);
+    }
 
     fetchData();
   }, []);
-
-  console.log(movie);
 
   const truncate = (string, n) => {
     return string?.length > n ? string.substring(0, n - 1) + '...' : string;
@@ -32,7 +37,9 @@ const Banner = () => {
       className="banner"
       style={{
         backgroundSize: 'cover',
-        backgroundImage: `url(${imageBaseURL + movie?.backdrop_path})`,
+        backgroundImage: `url(${
+          imageBaseURL + (movie?.backdrop_path || movie?.poster_path)
+        })`,
         backgroundPosition: 'center center'
       }}
     >
