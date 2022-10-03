@@ -1,7 +1,7 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Banner from './Banner';
-import Row from './Row';
+import Navbar from '../components/Navbar';
+import Banner from '../components/Banner';
+import Row from '../components/Row';
 import requests from '../api/requests';
 import '../styles/HomeScreen.css';
 

@@ -15,18 +15,23 @@ const Row = ({ title, fetchUrl, isLargeRow = false }) => {
   }, [fetchUrl]);
 
   return (
-    <div style={{ color: 'white' }}>
+    <div className="row">
       <h2>{title}</h2>
-      <ul>
-        {movies.map((movie) => (
-          <img
-            key={movie.id}
-            src={`${imageBaseURL + movie.poster_path}`}
-            alt=""
-            width="300"
-          />
-        ))}
-      </ul>
+      <div className="row__posters">
+        {movies.map((movie) =>
+          (isLargeRow && movie.poster_path) ||
+          (!isLargeRow && (movie.poster_path || movie.backdrop_path)) ? (
+            <img
+              className={`row__poster ${isLargeRow && 'row__posterLarge'}`}
+              key={movie.id}
+              src={`${imageBaseURL}${
+                isLargeRow ? movie.poster_path : movie.backdrop_path
+              }`}
+              alt=""
+            />
+          ) : null
+        )}
+      </div>
     </div>
   );
 };
